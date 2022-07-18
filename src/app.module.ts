@@ -11,6 +11,8 @@ import { QuestionController } from './question/question.controller';
 import { QuestionService } from './question/question.service';
 import { QuestionModule } from './question/question.module';
 import { AnswerModule } from './answer/answer.module';
+import { RoleModule } from './role/role.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { AnswerModule } from './answer/answer.module';
     ConfigModule.forRoot({ isGlobal: true }),
     QuestionModule,
     AnswerModule,
+    RoleModule,
+    UserModule,
   ],
   controllers: [UserController, RoleController, QuestionController],
   providers: [UserService, RoleService, QuestionService],

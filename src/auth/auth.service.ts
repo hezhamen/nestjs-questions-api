@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
@@ -24,7 +28,7 @@ export class AuthService {
       });
 
       if (!role) {
-        throw new ForbiddenException('Invalid role');
+        throw new NotFoundException('Invalid role');
       }
 
       const hash = await argon.hash(dto.password);
@@ -76,11 +80,13 @@ export class AuthService {
     userId: number,
     email: string,
   ): Promise<{ access_token: string }> {
+    // create payload
     const payload = {
       sub: userId,
       email,
     };
 
+    // create token
     const token = await this.jwt.signAsync(payload, {
       expiresIn: '24h',
       secret: this.config.get('JWT_SECRET'),
